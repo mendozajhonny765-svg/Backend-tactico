@@ -10,4 +10,5 @@ Optimizado para despliegue en Render.
 - `/bitacora`
 - `/defensa`
 - `/radar`
+
 - `/aprendizaje`
