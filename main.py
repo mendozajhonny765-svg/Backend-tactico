@@ -1,50 +1,41 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-# Configurar CORS para permitir conexión desde frontend
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # Cambiar por tu dominio si lo tienes
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
-# Incluir routers
+# Importar routers de cada módulo
 from simulador import router as simulador_router
+from defensa import router as defensa_router
 from bitacora import router as bitacora_router
-from demo import router as demo_router
+from aprendizaje import router as aprendizaje_router
+# Si tienes radar o sistema_tactico_predictivo, agrégalos aquí también
 
-app.include_router(simulador_router)
-app.include_router(bitacora_router)
-app.include_router(demo_router)
-# Importar routers
-from simulador import señal_simular, bitacora, defensa, radar, aprendizaje
+app = FastAPI(title="Sistema Táctico Predictivo")
 
-app = FastAPI(
-    title="Sistema Táctico Predictivo",
-    description="API para simulación, defensa, registro y aprendizaje táctico en tiempo real",
-    version="1.0.0"
-)
-
-# Configurar CORS para permitir conexión desde frontend
+# Configurar CORS para permitir acceso desde cualquier origen
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Cambiar por tu dominio en producción
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 # Incluir routers
-app.include_router(simulador.router)
-app.include_router(bitacora.router)
-app.include_router(defensa.router)
-app.include_router(radar.router)
-app.include_router(aprendizaje.router)
+app.include_router(simulador_router)
+app.include_router(defensa_router)
+app.include_router(bitacora_router)
+app.include_router(aprendizaje_router)
 
-# Endpoint raíz opcional
+# Endpoint raíz
 @app.get("/")
 def root():
+    return {"mensaje": "Sistema Táctico Predictivo operativo"}
 
-    return {"mensaje": "Sistema táctico operativo"}
+# Endpoint de estado
+@app.get("/status")
+def status():
+    return {"estado": "activo", "modulos": ["simulador", "defensa", "bitacora", "aprendizaje"]}
 
+# Ejecutar con Uvicorn si se lanza directamente
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=10000)
