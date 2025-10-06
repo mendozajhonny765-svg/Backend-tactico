@@ -1,15 +1,14 @@
-from sqlalchemy import Column, String, Float, DateTime
+from sqlalchemy import Column, String, Float, DateTime, Integer
+from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
-import datetime
 
 Base = declarative_base()
 
-class Registro(Base):
-    __tablename__ = "registros"
+class Ajuste(Base):
+    __tablename__ = "ajustes"
 
-    id = Column(String, primary_key=True, index=True)
-    partido = Column(String)
-    conviccion = Column(Float)
-    roi = Column(Float)
-    defensa = Column(String)
-    timestamp = Column(DateTime, default=datetime.datetime.utcnow)
+    id = Column(Integer, primary_key=True, index=True)
+    parametro = Column(String, index=True)
+    valor = Column(Float)
+    contexto = Column(String, nullable=True)
+    created_at = Column(DateTime, default=datetime.now)
