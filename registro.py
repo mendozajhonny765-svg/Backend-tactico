@@ -11,4 +11,4 @@ class Ajuste(Base):
     parametro = Column(String, index=True)
     valor = Column(Float)
     contexto = Column(String, nullable=True)
-    created_at = Column(DateTime, default=datetime.now)
+    created_at = Column(DateTime, default=datetime.utcnow)
