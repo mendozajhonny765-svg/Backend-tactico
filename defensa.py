@@ -13,11 +13,31 @@ class Contexto(BaseModel):
 @router.post("/evaluar")
 def evaluar_defensa(ctx: Contexto):
     blindaje = "Pasivo"
-    alerta = []
+    
+from fastapi import APIRouter
+from pydantic import BaseModel
+from typing import Optional
+
+router = APIRouter(prefix="/defensa", tags=["defensa"])
+
+class Contexto(BaseModel):
+    partido: str
+    narrativa: Optional[str] = None
+    alerta: Optional[str] = None
+    falta: Optional[float] = None
+    obligacion: Optional[float] = None
+
+@router.post("/evaluar")
+def evaluar_defensa(ctx: Contexto):
+    alertas = []
 
     if ctx.narrativa and "obligado" in ctx.narrativa.lower():
-        blindaje = "Activo"
-        alerta.append("Narrativa de obligación detectada")
+        alertas.append("Narrativa de obligación detectada")
+
+    return {
+        "partido": ctx.partido,
+        "alertas": alertas
+    }
 
     if ctx.fatiga and ctx.fatiga > 0.7:
         blindaje = "Activo"
@@ -31,4 +51,5 @@ def evaluar_defensa(ctx: Contexto):
         "partido": ctx.partido,
         "blindaje": blindaje,
         "alertas": alerta
+
     }
