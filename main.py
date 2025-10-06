@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 # Importar routers
-from app.routers import simulador, bitacora, defensa, radar, aprendizaje
+from simulador import señal_simular, bitacora, defensa, radar, aprendizaje
 
 app = FastAPI(
     title="Sistema Táctico Predictivo",
@@ -29,4 +29,5 @@ app.include_router(aprendizaje.router)
 # Endpoint raíz opcional
 @app.get("/")
 def root():
+
     return {"mensaje": "Sistema táctico operativo"}
